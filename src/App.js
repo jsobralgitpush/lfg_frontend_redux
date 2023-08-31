@@ -11,11 +11,11 @@ function App() {
         <h1 className='text-3xl font-bold'>Loans For Good</h1>
       </div>
       <div className='flex px-10'>
-        <div className="w-1/2 p-5 max-h-[100vh] overflow-y-auto">
+        <div className="w-1/2 p-5 max-h-[90vh] overflow-y-auto">
           <h1 className="text-xl py-2">Request your proposal with us right now!</h1>
           <ProposalForm />
         </div>
-        <div className="w-1/2 p-5 max-h-[100vh] overflow-y-auto">
+        <div className="w-1/2 p-5 max-h-[90vh] overflow-y-auto">
           <h1 className="text-xl py-2">Check out our recent Proposals!</h1>
           <ProposalList />
         </div>
