@@ -72,8 +72,8 @@ export function ToastAlert() {
         )
       }
       {
-        alerts.map((alert, index) => (
-          <div key={index}>
+        alerts.map((alert) => (
+          <div key={alert.message}>
             {renderToast(alert.type, alert.message)}
           </div>
         ))

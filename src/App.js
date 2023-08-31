@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import ProposalList from './features/proposal/ProposalList';
 import ProposalForm from './features/proposal/ProposalForm';

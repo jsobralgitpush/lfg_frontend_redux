@@ -9,31 +9,31 @@ export const proposalSlice = createSlice({
   name: 'proposal',
   initialState,
   reducers: {
-    getProposalAttributes: (state, action) => ({
+    getProposalAttributes: (state) => ({
       ...state,
     }),
     getProposalAttributesSuccess: (state, action) => ({
       ...state,
       attributes: action.payload,
     }),
-    getProposalAttributesFailure: (state, action) => ({
+    getProposalAttributesFailure: (state) => ({
       ...state,
     }),
-    getProposals: (state, action) => ({
+    getProposals: (state) => ({
       ...state,
     }),
     getProposalsSuccess: (state, action) => ({
       ...state,
       proposals: action.payload,
     }),
-    getProposalsFailure: (state, action) => ({
+    getProposalsFailure: (state) => ({
       ...state,
     }),
     sendProposalSuccess: (state, action) => ({
       ...state,
       proposals: [...state.proposals, action.payload],
     }),
-    sendProposalFailure: (state, action) => ({
+    sendProposalFailure: (state) => ({
       ...state,
     }),
     refreshProposalSuccess: (state, action) => {
@@ -41,10 +41,17 @@ export const proposalSlice = createSlice({
       const index = state.proposals.findIndex((p) => p.id === proposalId);
 
       if (index !== -1) {
-        state.proposals[index] = action.payload;
+        const updatedProposals = [...state.proposals];
+        updatedProposals[index] = action.payload;
+        return {
+          ...state,
+          proposals: updatedProposals,
+        };
       }
+
+      return state;
     },
-    refreshProposalFailure: (state, action) => ({
+    refreshProposalFailure: (state) => ({
       ...state,
     }),
   },

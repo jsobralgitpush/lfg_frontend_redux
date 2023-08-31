@@ -57,7 +57,7 @@ function ProposalList() {
     <Table striped className="gap-4 inline-table">
       <Table.Head>
         {['Name', 'Document', 'Status', 'Check Updates', 'Last System Update'].map((header) => (
-          <Table.HeadCell className="text-center">
+          <Table.HeadCell className="text-center" key={`${header}-header`}>
             {header}
           </Table.HeadCell>
         ))}

@@ -108,7 +108,7 @@ const mapStateProps = (store) => ({
   attributes: store.proposal.attributes,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = () => ({
   getProposalAttributes,
   getProposalAttributesSuccess,
   getProposalAttributesFailure,
