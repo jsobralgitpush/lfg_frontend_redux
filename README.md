@@ -108,6 +108,6 @@ In this slice, we manage `Proposal` states. There is two components, a list (`Pr
 In this slice we manage `alerts` from our `UI`. There are two states: `loading` which is a `bool` that indicates if there is any loading ocurring and `alerts` which represents an `array` of `hash`, with payload as `{type: 'error', message: 'Proposal failed to load'}`. Acocrding to that states, our `ToastAlert` component will raise and notify our user
 
 ## References
-https://github.com/markerikson/project-minimek
-https://github.com/andrewngu/sound-redux
-https://www.taniarascia.com/redux-react-guide/
+- https://github.com/markerikson/project-minimek
+- https://github.com/andrewngu/sound-redux
+- https://www.taniarascia.com/redux-react-guide/
