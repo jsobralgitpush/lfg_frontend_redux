@@ -29,6 +29,9 @@ export const proposalSlice = createSlice({
     getProposalsFailure: (state) => ({
       ...state,
     }),
+    sendProposal: (state) => ({
+      ...state,
+    }),
     sendProposalSuccess: (state, action) => ({
       ...state,
       proposals: [...state.proposals, action.payload],
@@ -64,6 +67,7 @@ export const {
   getProposals,
   getProposalsSuccess,
   getProposalsFailure,
+  sendProposal,
   sendProposalSuccess,
   sendProposalFailure,
   refreshProposalSuccess,

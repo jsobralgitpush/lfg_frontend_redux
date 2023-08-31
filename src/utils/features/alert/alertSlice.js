@@ -10,6 +10,7 @@ import {
   sendProposalFailure,
   refreshProposalSuccess,
   refreshProposalFailure,
+  sendProposal,
 } from '../../../features/proposal/proposalSlice';
 
 const initialState = {
@@ -81,6 +82,10 @@ export const alertSlice = createSlice({
             message: 'Proposals failed to load',
           },
         ],
+      }))
+      .addCase(sendProposal, (state) => ({
+        ...state,
+        loading: true,
       }))
       .addCase(sendProposalSuccess, (state) => ({
         ...state,
