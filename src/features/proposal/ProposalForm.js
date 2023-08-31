@@ -27,7 +27,6 @@ function ProposalForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     postProposal(formData);
   };
 
