@@ -84,7 +84,6 @@ function ProposalForm() {
               name={attribute.slug}
               id={attribute.slug}
               placeholder={`Enter your ${attribute.name} here`}
-              value={formData[attribute.name] || ''}
               disabled={false}
               onChange={handleInputChange}
             />
