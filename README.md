@@ -1,71 +1,119 @@
-# Getting Started with Create React App
+# Loans For Good - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Summary
+- [Demo](#demo)
+- [How to Build the project](#how-to-build-the-project)
+- [Project explanation](#project-explanation)
+- [Code Style](#code-style)
+- [References](#references)
 
-## Available Scripts
+## Demo
+https://loansforgoodfrontend-06732fd2e7f8.herokuapp.com/
 
-In the project directory, you can run:
+## How to build the project
+To build the project, you have to download this repo and the [backend](https://github.com/jsobralgitpush/lfg_backend) one. After that, create an app tree like this
+### App tree
+```
+(root)
+├── loans_for_good_backend
+├── loans_for_good_frontend
+│   ├── (this repo)
+└── docker-compose.yml
+```
+and use this `docker-compose.yml`, setting the following `config-vars` as your preference or use the current ones from the example (just to test the app)
+### env
+```
+POSTGRES_DB=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+DEBUG=
+DATABASE_URL=
+REACT_APP_API_HOSTNAME=
+REDIS_URL=
+```
+### docker-compose.yml
+```
+version: '3.8'
 
-### `npm start`
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  backend:
+    build:
+      context: ./loans_for_good_backend
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - ./loans_for_good_backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DEBUG: 'True'
+      DATABASE_URL: postgresql://myuser:mypassword@db:5432/mydatabase
+      REDIS_URL: redis://redis:6379/0
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  frontend:
+    build:
+      context: ./loans_for_good_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./loans_for_good_frontend:/app
+    environment:
+      REACT_APP_API_HOSTNAME: http://localhost:8000
+  
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+      
 
-### `npm test`
+  celery:
+    build:
+      context: ./loans_for_good_backend
+    command: celery -A loans_for_good worker --loglevel=info
+    volumes:
+      - ./loans_for_good_backend:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgresql://myuser:mypassword@db:5432/mydatabase
+      REDIS_URL: redis://redis:6379/0
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+volumes:
+  postgres_data:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+## Project explanation
+The project simulates a financial company which loans money. To request a loan, you have to send a `Proposal`. Users can send, check and refresh the status of all proposals in a SPA. Admin users can register new attributes to proposal and change the status of each proposal. For further detail about the [backend](https://github.com/jsobralgitpush/lfg_backend) check its README.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+In this App, we have two `slices` which represents local states. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### ProposalSlice
+In this slice, we manage `Proposal` states. There is two components, a list (`ProposalList`) and a form (`ProposalForm`). This slice manage `proposals` and `attributes` states, which represents an `array` of `JSON` from our `backend` fetch. To check how the fetch proposal is working, you can check files at `/src/api/*`. 
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### AlertSlice
+In this slice we manage `alerts` from our `UI`. There are two states: `loading` which is a `bool` that indicates if there is any loading ocurring and `alerts` which represents an `array` of `hash`, with payload as `{type: 'error', message: 'Proposal failed to load'}`. Acocrding to that states, our `ToastAlert` component will raise and notify our user
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# lfg_frontend_redux
+## Code Style
+In this code base, we're using the [`eslint-airbnb`](https://airbnb.io/javascript/) format, configured at the file `.eslintrc`. To execute it and try auto fixes, run:
+```
+npx eslint --fix
+```
+## References
+- https://github.com/markerikson/project-minimek
+- https://github.com/andrewngu/sound-redux
+- https://www.taniarascia.com/redux-react-guide/
