@@ -13,7 +13,6 @@ import { HiCheck, HiClock, HiBan } from 'react-icons/hi';
 import { fetchProposal } from "../../api/proposal/fetchProposal";
 import { fetchProposalById } from "../../api/proposal/fetchProposalById";
 
-
 const ProposalList = () => {
   const proposals = useSelector((state) => state.proposal.proposals);
   const dispatch = useDispatch();
