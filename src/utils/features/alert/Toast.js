@@ -79,7 +79,7 @@ export function ToastAlert() {
       }
       {
         alerts.map((alert) => (
-          <div key={`${alert.message}-${Date.now()}`}>
+          <div key={`${alert.message}-${Math.random(10000)}`}>
             {renderToast(alert.type, alert.message)}
           </div>
         ))
