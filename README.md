@@ -1,9 +1,10 @@
-# Loans For Good - Frontend (work in progress)
+# Loans For Good - Frontend
 
 ## Summary
 - [Demo](#demo)
 - [How to Build the project](#how-to-build-the-project)
 - [Project explanation](#project-explanation)
+- [Code Style](#code-style)
 - [References](#references)
 
 ## Demo
@@ -107,6 +108,11 @@ In this slice, we manage `Proposal` states. There is two components, a list (`Pr
 ### AlertSlice
 In this slice we manage `alerts` from our `UI`. There are two states: `loading` which is a `bool` that indicates if there is any loading ocurring and `alerts` which represents an `array` of `hash`, with payload as `{type: 'error', message: 'Proposal failed to load'}`. Acocrding to that states, our `ToastAlert` component will raise and notify our user
 
+## Code Style
+In this code base, we're using the [`eslint-airbnb`](https://airbnb.io/javascript/) format, configured at the file `.eslintrc`. To execute it and try auto fixes, run:
+```
+npx eslint --fix
+```
 ## References
 - https://github.com/markerikson/project-minimek
 - https://github.com/andrewngu/sound-redux
