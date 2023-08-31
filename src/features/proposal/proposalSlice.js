@@ -34,7 +34,7 @@ export const proposalSlice = createSlice({
     }),
     sendProposalSuccess: (state, action) => ({
       ...state,
-      proposals: [...state.proposals, action.payload],
+      proposals: [action.payload, ...state.proposals],
     }),
     sendProposalFailure: (state) => ({
       ...state,
